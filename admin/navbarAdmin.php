@@ -12,7 +12,7 @@
               $aktivnaStranka = basename(dirname($_SERVER['SCRIPT_NAME']));
 
               $menu = [];
-
+//h
               $riadky = file('../admin/menuAdmin.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES); 
 
               foreach ($riadky as  $riadok) {
