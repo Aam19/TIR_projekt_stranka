@@ -5,25 +5,39 @@
 
 	session_start();
 
-    if(isset($_SESSION['prihlaseny'])) {
+   /* if(isset($_SESSION['prihlaseny'])) {
         header('Location: prihlaseny.php');
         exit();
-    }
+    }*/
 ?>
 <?php 
-$chyba ="";
+$servername = "localhost";
+$username = "Adam";
+$password = "KqRjijItFqPXql2t";
+$db = "uzivatelia2021";
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
+// Create connection
+$conn = new mysqli($servername, $username, $password, $db);
 
-     $uzivatelia = file('uzivatelia.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-     $prihlasenie = [];
-        foreach ($uzivatelia as $uzivatel) {
-            list($k,$h) = explode('::', $uzivatel);
-            $prihlasenie[$k] = $h;
-                   }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        if($_POST['password'] === $prihlasenie[$_POST['email-address']])
-        {
+        $user = $_POST['email_address'];
+        $heslo = md5($_POST['password']);
+        $sql = 'SELECT * FROM uzivatelia WHERE login="'.$user.'" AND heslo="'.$heslo.'"';
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while($row = $result->fetch_assoc()) {
+              echo "id: " . $row["id"]. " - Name: " . $row["login"]. " " . $row["heslo"]. "<br>";
+              $_SESSION["rola"] = $row["rola"];
+            }
+            session_start();
+              $_SESSION["user"] = $user;
+              header('Location: index.php');
+          }
+
+        
             $_SESSION['prihlaseny'] = 1;
             header('Location: prihlaseny.php');
             exit();
@@ -35,8 +49,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
   </button>
 </div>
 <?php
-        }
-        else if (!$prihlasenie[$_POST['email-address']])
+        
+        if (!$prihlasenie[$_POST['email-address']])
         {
             ?>//uzivatel neexistuje
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -47,10 +61,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 </div>
 <?php
         }
-        else {
-            //nespravne heslo
-            
-        }
+        else{
+            echo "0 results";
+          }
     }
  ?>
 

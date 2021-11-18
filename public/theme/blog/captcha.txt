@@ -2,7 +2,7 @@ otazka: Napíšte meno tretej planéty našej slnečnej sústavy
 odpoved: zem
 
 otazka: Napíšte druhý deň v týždni (slovom)
-odpoved: utorok
+odpoved: utorok 
 
 otazka: Napíšte výsledok dva plus dva (slovom, píšte bez diakritiky)
 odpoved: styri
